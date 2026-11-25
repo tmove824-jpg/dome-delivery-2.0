@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>หิ้วให้ – แพลตฟอร์มรับหิ้วของ</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6f8;--surface:#fff;--ink:#12202b;--mute:#5b6b78;--line:#d8e0e6;--brand:#0b4f6c;--tag:#ffc83d;--tagink:#3a2a00;--ok:#1a7f4b;--bad:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e161c;--surface:#16222b;--ink:#e8eff4;--mute:#93a5b3;--line:#2a3a46;--brand:#5cc0e8;--ok:#4fd08a;--bad:#ff8a7a}}
+:root[data-theme="dark"]{--bg:#0e161c;--surface:#16222b;--ink:#e8eff4;--mute:#93a5b3;--line:#2a3a46;--brand:#5cc0e8;--ok:#4fd08a;--bad:#ff8a7a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 0 4px;flex-wrap:wrap}
+h1{font-size:1.8rem;margin:0}h2{font-size:1.15rem;margin:24px 0 10px}h3{margin:0;font-size:1.05rem}
+.mute{color:var(--mute);font-size:.9rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.btn,.chip{font:inherit;cursor:pointer;border-radius:10px;border:1.5px solid var(--brand);min-height:42px;padding:0 16px;font-weight:700;background:var(--brand);color:var(--surface)}
+.btn.alt{background:transparent;color:var(--brand)}.btn.bad{background:transparent;color:var(--bad);border-color:var(--bad)}
+.btn.sm{min-height:36px;padding:0 12px}
+.seg{display:flex;gap:8px;margin:8px 0}.seg .btn{flex:1}
+.seg .btn[aria-pressed=false]{background:transparent;color:var(--brand)}
+label{display:block;font-size:.9rem;color:var(--mute);margin-top:12px}
+input,select{width:100%;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.checks{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.checks label{margin:0;display:flex;align-items:center;gap:6px;color:var(--ink);border:1.5px solid var(--line);border-radius:99px;padding:4px 12px;cursor:pointer}
+.checks input{width:auto}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--tag);outline-offset:2px}
+.err{color:var(--bad);min-height:1.3em;margin:8px 0 0;font-size:.9rem}
+.tag{display:inline-block;background:var(--tag);color:var(--tagink);font-size:.8rem;font-weight:700;padding:1px 10px;border-radius:99px;margin:2px 4px 2px 0}
+.tag.s{background:transparent;border:1.5px solid var(--line);color:var(--ink);font-weight:500}
+.tag.ok{background:var(--ok);color:#fff}.tag.no{background:var(--bad);color:#fff}
+.cr{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.fee{font-size:1.4rem;font-weight:700;color:var(--brand);white-space:nowrap}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.hide{display:none}
+.row{display:flex;justify-content:space-between;padding:3px 0}
+.row.t{border-top:1.5px dashed var(--line);margin-top:6px;padding-top:8px;font-weight:700}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;z-index:9}
+.tabs{display:flex;gap:6px;margin:14px 0 4px;overflow-x:auto}.tabs .btn{flex:1;white-space:nowrap}.tabs .btn[aria-pressed=false]{background:transparent;color:var(--brand)}
+.shops{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.shops .btn{white-space:nowrap}.shops .btn[aria-pressed=false]{background:transparent;color:var(--brand)}
+.mrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.q{display:flex;align-items:center;gap:8px}.q button{width:36px;height:36px;border-radius:9px;border:1.5px solid var(--brand);background:transparent;color:var(--brand);font:inherit;font-size:1.1rem;cursor:pointer}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow-y:auto;padding:4px 0}
+.m{max-width:82%;padding:8px 12px;border-radius:14px;background:var(--bg);border:1px solid var(--line);align-self:flex-start;word-break:break-word}
+.m.me{align-self:flex-end;background:var(--brand);color:var(--surface);border-color:var(--brand)}
+.m small{display:block;opacity:.7;font-size:.75rem}
+.qrb{background:#fff;color:#000;padding:8px;border-radius:10px;margin-top:6px;text-align:center}.qrb svg{width:150px;height:150px;display:block;margin:0 auto}
+.send{display:flex;gap:8px;margin-top:10px}.send input{flex:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><h1>หิ้วให้</h1><div id="me"></div></div>
+<p class="mute" style="margin:0">แพลตฟอร์มจับคู่คนอยากได้ของกับคนที่หิ้วของให้</p>
+<div id="app"></div>
+</div>
+<div class="toast hide" id="toast" role="status"></div>
+<script>
+(function(){
+var PLACES=["หอ F","หอ M","หอ C","หอ B","หอ A"];
+var SHOPS=[{n:"ข้าวมันไก่ป้าหน้าหอ",e:"🍗",m:[["ข้าวมันไก่",45],["ข้าวมันไก่ทอด",50],["น้ำจิ้มพิเศษ",5]]},{n:"ชานมไข่มุก",e:"🧋",m:[["ชานมไข่มุก",35],["ชาไทยเย็น",30],["โกโก้เย็น",35]]},{n:"7-Eleven หน้ามอ",e:"🏪",m:[["แซนด์วิชทูน่า",25],["น้ำดื่ม",10],["ขนมปังไส้ครีม",15]]},{n:"ร้านกาแฟ",e:"☕",m:[["อเมริกาโน่เย็น",40],["ลาเต้เย็น",50]]}];
+var SHIP=20;
+var DB={users:[
+ {id:1,role:"carrier",name:"พี่มุก",phone:"0811111111",pw:"1234",from:"ตลาดหน้ามอ",to:["หอ F","หอ M","หอ C"],fee:10,date:"2026-12-01",time:"12:00"},
+ {id:2,role:"carrier",name:"น้องบอส",phone:"0822222222",pw:"1234",from:"ห้างใกล้มหาวิทยาลัย",to:["หอ B","หอ A","หอ C"],fee:15,date:"2026-12-01",time:"18:30"},
+ {id:3,role:"carrier",name:"ป้าแอน",phone:"0833333333",pw:"1234",from:"โรงอาหารกลาง",to:["หอ A","หอ F"],fee:8,date:"2026-12-02",time:"10:00"}],
+ reqs:[],msgs:[],seq:10};
+try{var sv=JSON.parse(localStorage.getItem("hiwDB2"));if(sv&&sv.users)DB=sv}catch(e){}
+function save(){try{localStorage.setItem("hiwDB2",JSON.stringify(DB))}catch(e){}}
+var me=null,mode="login",role="customer",pick=null,fl={place:"",sort:"fee"},tab="shop",ct="mine",sstep=0,draft=null,shop=0,cart={},chat=null;
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function toast(t){var e=$("toast");e.textContent=t;e.classList.remove("hide");setTimeout(function(){e.classList.add("hide")},2200)}
+function dt(d,t){var m=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."],p=d.split("-");return Number(p[2])+" "+m[p[1]-1]+" เวลา "+t+" น."}
+function U(id){return DB.users.filter(function(u){return u.id===id})[0]}
+function R(id){return DB.reqs.filter(function(r){return r.id===id})[0]}
+function tot(r){return r.type==="shop"?r.food+r.qty*r.fee:r.qty*r.fee}
+function stag(r){var s=r.st;return(r.paid?'<span class="tag ok">จ่ายแล้ว</span>':"")+(s==="wait"?'<span class="tag s">รอผู้หิ้วตอบรับ</span>':s==="open"?'<span class="tag">รอคนกดรับงาน</span>':s==="ok"?'<span class="tag ok">รับแล้ว</span>':s==="no"?'<span class="tag no">ปฏิเสธ</span>':'<span class="tag ok">ส่งแล้ว</span>')}
+function qr(seed){var n=21,x,y,o='<svg viewBox="0 0 21 21" role="img" aria-label="QR จำลอง"><rect width="21" height="21" fill="#fff"/>',st=seed;
+ function rn(){st=(st*1103515245+12345)&0x7fffffff;return st/0x7fffffff}
+ function fd(a,b){return a==0||a==6||b==0||b==6||(a>=2&&a<=4&&b>=2&&b<=4)}
+ for(y=0;y<n;y++)for(x=0;x<n;x++){var on;
+  if(x<7&&y<7)on=fd(x,y);else if(x>13&&y<7)on=fd(x-14,y);else if(x<7&&y>13)on=fd(x,y-14);
+  else if((x==7||y==7||x==13&&y<8||y==13&&x<8))on=false;else on=rn()>.5;
+  if(on)o+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="#000"/>'}
+ return o+'</svg>'}
+
+function auth(){
+ var reg=mode==="reg",car=role==="carrier";
+ var h='<div class="card"><div class="seg"><button class="btn" data-m="login" aria-pressed="'+!reg+'">เข้าสู่ระบบ</button><button class="btn" data-m="reg" aria-pressed="'+reg+'">สมัครสมาชิก</button></div>';
+ if(reg)h+='<div class="seg"><button class="btn" data-r="customer" aria-pressed="'+!car+'">ผู้ฝากหิ้ว</button><button class="btn" data-r="carrier" aria-pressed="'+car+'">ผู้รับหิ้ว</button></div><p class="mute" style="margin:0">'+(car?"คุณจะรับงานและส่งของให้คนอื่น":"คุณอยากสั่งของให้คนอื่นหิ้วมาส่ง")+'</p><label for="nm">ชื่อที่แสดง</label><input id="nm" autocomplete="name">';
+ h+='<label for="ph">เบอร์โทร (10 หลัก)</label><input id="ph" inputmode="numeric" maxlength="10" autocomplete="tel"><label for="pw">รหัสผ่าน</label><input id="pw" type="password" autocomplete="current-password">';
+ if(reg&&car){h+='<label for="fr">คุณอยู่ที่ไหน / จะไปซื้อที่ไหน</label><input id="fr" placeholder="เช่น ตลาดหน้ามอ"><label>ส่งของที่หอไหนได้บ้าง</label><div class="checks">'+PLACES.map(function(p){return'<label><input type="checkbox" name="to" value="'+p+'">'+p+'</label>'}).join("")+'</div><label for="fe">ค่าหิ้ว (บาทต่อชิ้น)</label><input id="fe" type="number" min="0" inputmode="numeric"><label for="dd">วันที่ส่งของ</label><input id="dd" type="date"><label for="tt">รอบส่งกี่โมง</label><input id="tt" type="time" value="12:00">'}
+ h+='<p class="err" id="err" role="alert"></p><button class="btn" id="go" style="width:100%">'+(reg?"สมัครสมาชิก":"เข้าสู่ระบบ")+'</button>';
+ if(!reg)h+='<p class="mute">ลองเข้าใช้ผู้รับหิ้ว: 0811111111 / 1234 · ผู้ฝากหิ้วสมัครใหม่ได้เลย</p>';
+ $("app").innerHTML=h+'</div>';
+}
+function doAuth(){
+ var ph=$("ph").value.trim(),pw=$("pw").value,e=$("err");
+ if(!/^0\d{9}$/.test(ph))return e.textContent="เบอร์โทรต้องมี 10 หลักและขึ้นต้นด้วย 0";
+ if(pw.length<4)return e.textContent="รหัสผ่านต้องมีอย่างน้อย 4 ตัว";
+ var ex=DB.users.filter(function(u){return u.phone===ph})[0];
+ if(mode==="login"){if(!ex||ex.pw!==pw)return e.textContent="เบอร์โทรหรือรหัสผ่านไม่ถูกต้อง";me=ex;return home()}
+ if(ex)return e.textContent="เบอร์นี้สมัครไว้แล้ว ให้เข้าสู่ระบบแทน";
+ var nm=$("nm").value.trim();if(!nm)return e.textContent="กรอกชื่อที่แสดง";
+ var u={id:DB.seq++,role:role,name:nm,phone:ph,pw:pw};
+ if(role==="carrier"){
+  u.from=$("fr").value.trim();u.to=[].slice.call(document.querySelectorAll('input[name=to]:checked')).map(function(c){return c.value});
+  u.fee=Number($("fe").value);u.date=$("dd").value;u.time=$("tt").value;
+  if(!u.from)return e.textContent="บอกด้วยว่าคุณอยู่ที่ไหน";
+  if(!u.to.length)return e.textContent="เลือกหออย่างน้อย 1 หอ";
+  if($("fe").value===""||!(u.fee>=0))return e.textContent="กรอกค่าหิ้วเป็นตัวเลข";
+  if(!u.date||!u.time)return e.textContent="เลือกวันและเวลารอบส่ง";
+ }
+ DB.users.push(u);save();me=u;toast("สมัครสำเร็จ");home();
+}
+function head(){$("me").innerHTML=me?'<span class="mute">'+esc(me.name)+' · '+(me.role==="carrier"?"ผู้รับหิ้ว":"ผู้ฝากหิ้ว")+'</span> <button class="btn alt sm" id="out">ออก</button>':""}
+function home(){chat=null;sstep=0;head();me?(me.role==="carrier"?carrierView():customerView()):auth()}
+function tabs(arr,cur,attr){return'<div class="tabs">'+arr.map(function(t){return'<button class="btn sm" data-'+attr+'="'+t[0]+'" aria-pressed="'+(cur===t[0])+'">'+t[1]+'</button>'}).join("")+'</div>'}
+
+function reqCard(r,isC){
+ var o=U(isC?r.kid:r.cid),who=o?(isC?"ผู้รับหิ้ว: ":"ผู้ฝาก: ")+esc(o.name):"ยังไม่มีคนรับงาน";
+ var d=r.type==="shop"?'<div>'+esc(r.shopName)+': '+esc(r.item)+'</div>':'<div>'+esc(r.item)+' × '+r.qty+'</div>';
+ return '<div class="card"><div class="cr"><h3>'+(r.type==="shop"?"🛵 ร้านอาหาร":"🧳 ฝากหิ้ว")+'</h3><div>'+stag(r)+'</div></div>'+d+'<div class="mute">'+who+' · ส่งที่ '+esc(r.to)+'</div><div class="row t"><span>รวม'+(r.type==="shop"?" (อาหาร+ค่าหิ้ว)":"ค่าหิ้ว")+'</span><span>฿'+tot(r)+'</span></div>'+actions(r,isC)+'</div>';
+}
+function actions(r,isC){
+ var b="";
+ if(r.kid&&r.st!=="no")b+='<button class="btn alt sm" data-chat="'+r.id+'">💬 แชท'+(isC?"กับผู้รับหิ้ว":"กับผู้ฝาก")+'</button>';
+ if(!isC){
+  if(r.st==="wait")b+='<button class="btn sm" data-a="ok" data-id="'+r.id+'">รับหิ้ว</button><button class="btn bad sm" data-a="no" data-id="'+r.id+'">ปฏิเสธ</button>';
+  if(r.st==="ok")b+='<button class="btn sm" data-a="done" data-id="'+r.id+'">ส่งของแล้ว</button>';
+ }
+ return b?'<div class="bar">'+b+'</div>':"";
+}
+
+function customerView(){
+ var h=tabs([["shop","เลือกร้าน"],["carrier","ฝากซื้อเอง"],["mine","คำขอของฉัน"]],tab,"tab");
+ if(tab==="shop"&&sstep===1){
+  var cl=DB.users.filter(function(u){return u.role==="carrier"&&u.to.indexOf(draft.to)>-1});cl.sort(function(a,b){return a.fee-b.fee});
+  h+='<h2>เลือกคนรับหิ้ว</h2><div class="card"><b>'+esc(draft.shopName)+'</b><div>'+esc(draft.item)+'</div><div class="mute">ส่งที่ '+esc(draft.to)+' · ค่าอาหาร ฿'+draft.food+'</div></div>'+(cl.length?cl.map(function(u){return'<div class="card"><div class="cr"><div><h3>'+esc(u.name)+'</h3><div class="mute">อยู่ที่ '+esc(u.from)+'</div></div><div class="fee">฿'+u.fee+'<span class="mute" style="font-size:.8rem"> /ชิ้น</span></div></div><div style="margin-top:6px"><span class="mute">ส่งได้ที่:</span> '+u.to.map(function(p){return'<span class="tag s">'+p+'</span>'}).join("")+'</div><span class="tag">รอบส่ง '+dt(u.date,u.time)+'</span><div class="row t"><span>รวม (อาหาร+ค่าหิ้ว)</span><span>฿'+(draft.food+draft.n*u.fee)+'</span></div><div class="bar"><button class="btn" data-pickshop="'+u.id+'">เลือกคนนี้</button></div></div>'}).join(""):'<p class="mute">ยังไม่มีผู้รับหิ้วที่ส่ง'+esc(draft.to)+'</p>')+'<div class="bar"><button class="btn alt" data-sback="1">กลับไปเลือกเมนู</button></div>';
+ } else if(tab==="shop"){
+  var sh=SHOPS[shop],fd=0,n=0,items=[];
+  h+='<div class="shops">'+SHOPS.map(function(x,i){return'<button class="btn sm" data-shop="'+i+'" aria-pressed="'+(i===shop)+'">'+x.e+' '+x.n+'</button>'}).join("")+'</div><div class="card">'+sh.m.map(function(m,i){var q=cart[sh.n+i]||0;fd+=q*m[1];n+=q;if(q)items.push(m[0]+" ×"+q);return'<div class="mrow"><div>'+m[0]+'<div class="mute">฿'+m[1]+'</div></div><div class="q"><button data-c="-1" data-k="'+i+'" aria-label="ลด '+m[0]+'">−</button><b>'+q+'</b><button data-c="1" data-k="'+i+'" aria-label="เพิ่ม '+m[0]+'">+</button></div></div>'}).join("")+'<label for="dm">ส่งที่หอ</label><select id="dm">'+PLACES.map(function(p){return'<option>'+p+'</option>'}).join("")+'</select><div class="row"><span>ค่าอาหาร</span><span>฿'+fd+'</span></div><div class="row t"><span>รวมค่าอาหาร</span><span>฿'+fd+'</span></div><p class="mute" style="margin:6px 0 0">เลือกเมนูและหอก่อน แล้วไปเลือกคนรับหิ้วในขั้นถัดไป</p><p class="err" id="err"></p><button class="btn" id="order" style="width:100%"'+(n?"":" disabled")+'>เลือกคนรับหิ้ว</button></div>';
+ }
+ if(tab==="carrier"){
+  var list=DB.users.filter(function(u){return u.role==="carrier"&&(!fl.place||u.to.indexOf(fl.place)>-1)});
+  list.sort(function(a,b){return fl.sort==="fee"?a.fee-b.fee:(a.date+a.time<b.date+b.time?-1:1)});
+  h+='<div class="card"><div class="filters"><div><label for="fp" style="margin-top:0">ส่งที่หอ</label><select id="fp"><option value="">ทุกหอ</option>'+PLACES.map(function(p){return'<option'+(fl.place===p?" selected":"")+'>'+p+'</option>'}).join("")+'</select></div><div><label for="fs" style="margin-top:0">เรียงตาม</label><select id="fs"><option value="fee"'+(fl.sort==="fee"?" selected":"")+'>ค่าหิ้วถูกสุด</option><option value="date"'+(fl.sort==="date"?" selected":"")+'>รอบส่งเร็วสุด</option></select></div></div></div>';
+  h+=list.length?list.map(function(u){return '<div class="card"><div class="cr"><div><h3>'+esc(u.name)+'</h3><div class="mute">อยู่ที่ '+esc(u.from)+'</div></div><div class="fee">฿'+u.fee+'<span class="mute" style="font-size:.8rem"> /ชิ้น</span></div></div><div style="margin-top:8px"><span class="mute">ส่งได้ที่:</span> '+u.to.map(function(p){return'<span class="tag s">'+p+'</span>'}).join("")+'</div><span class="tag">รอบส่ง '+dt(u.date,u.time)+'</span><div class="bar"><button class="btn" data-pick="'+u.id+'">ฝากคนนี้หิ้ว</button></div></div>'}).join(""):'<p class="mute">ยังไม่มีผู้หิ้วที่ส่งหอนี้ ลองเลือกหออื่น</p>';
+ }
+ if(tab==="mine"){var my=DB.reqs.filter(function(r){return r.cid===me.id});h+=my.length?my.map(function(r){return reqCard(r,true)}).join(""):'<p class="mute">ยังไม่มีคำขอ</p>'}
+ $("app").innerHTML=h;
+}
+function pickView(id){
+ var u=U(id);pick=u;
+ $("app").innerHTML='<h2>ฝาก '+esc(u.name)+' หิ้วของ</h2><div class="card"><div class="mute">ค่าหิ้ว ฿'+u.fee+'/ชิ้น · รอบส่ง '+dt(u.date,u.time)+'</div><label for="it">ของที่ฝากซื้อ</label><input id="it" placeholder="เช่น ข้าวกล่อง 1 กล่อง"><label for="qy">จำนวนชิ้น</label><input id="qy" type="number" min="1" max="50" value="1" inputmode="numeric"><label for="tp">ส่งที่หอ</label><select id="tp">'+u.to.map(function(p){return'<option>'+p+'</option>'}).join("")+'</select><div class="row t" style="margin-top:14px"><span>ค่าหิ้วรวม</span><span id="tot">฿'+u.fee+'</span></div><p class="mute" style="margin:4px 0 0">ยังไม่รวมราคาสินค้า คุยกับผู้หิ้วในแชท</p><p class="err" id="err" role="alert"></p><div class="bar"><button class="btn" id="send">ส่งคำขอ</button><button class="btn alt" id="back">กลับ</button></div></div>';
+}
+function carrierView(){
+ var u=me,h=tabs([["mine","คำขอของฉัน"],["me","โปรไฟล์"]],ct,"ct");
+ if(ct==="jobs"){var jobs=DB.reqs.filter(function(r){return r.st==="open"&&u.to.indexOf(r.to)>-1});
+  h+='<p class="mute">แสดงงานที่ส่งไปหอที่คุณรับ ('+u.to.join(", ")+')</p>'+(jobs.length?jobs.map(function(r){var c=U(r.cid);return'<div class="card"><div class="cr"><h3>🛵 '+esc(r.shopName)+'</h3><div class="fee">฿'+r.fee+'</div></div><div>'+esc(r.item)+'</div><div class="mute">ผู้ฝาก: '+esc(c.name)+' · ส่งที่ '+esc(r.to)+' · อาหาร ฿'+r.food+'</div><div class="bar"><button class="btn" data-a="take" data-id="'+r.id+'">รับงาน</button></div></div>'}).join(""):'<p class="mute">ยังไม่มีงานว่าง รอลูกค้าสั่งจากร้าน</p>')}
+ if(ct==="mine"){var my=DB.reqs.filter(function(r){return r.kid===u.id});var inc=my.filter(function(r){return r.st==="ok"||r.st==="done"}).reduce(function(a,r){return a+r.qty*r.fee},0);
+  h+='<div class="card"><div class="row t" style="border:0;margin:0;padding:0"><span>รายได้ค่าหิ้วที่รับแล้ว</span><span>฿'+inc+'</span></div></div>'+(my.length?my.map(function(r){return reqCard(r,false)}).join(""):'<p class="mute">ยังไม่มีงาน</p>')}
+ if(ct==="me")h+='<div class="card"><div class="cr"><div><h3>'+esc(u.name)+'</h3><div class="mute">อยู่ที่ '+esc(u.from)+'</div></div><div class="fee">฿'+u.fee+'/ชิ้น</div></div><div style="margin-top:8px">'+u.to.map(function(p){return'<span class="tag s">'+p+'</span>'}).join("")+'</div><span class="tag">รอบส่ง '+dt(u.date,u.time)+'</span></div>';
+ $("app").innerHTML=h;
+}
+function chatView(id){
+ chat=id;var r=R(id),o=U(me.role==="carrier"?r.cid:r.kid),ms=DB.msgs.filter(function(m){return m.rid===id});
+ var h='<h2>แชทกับ '+esc(o.name)+'</h2><div class="card"><div class="mute">'+(r.type==="shop"?esc(r.shopName)+': ':"")+esc(r.item)+' · ส่งที่ '+esc(r.to)+' · รวม ฿'+tot(r)+' '+stag(r)+'</div><div class="chat" id="log" aria-live="polite">';
+ h+=ms.length?ms.map(function(m){var mine=m.from===me.id;return'<div class="m'+(mine?" me":"")+'"><small>'+esc(U(m.from).name)+'</small>'+esc(m.text)+(m.qr?'<div class="qrb">'+qr(m.rid*97+m.qr)+'<div style="font-size:.85rem">QR พร้อมเพย์ (จำลอง) ฿'+m.qr+'</div></div>'+(!mine&&!r.paid?'<button class="btn sm" style="margin-top:6px" data-paid="'+r.id+'" data-amt="'+m.qr+'">แจ้งโอนแล้ว</button>':""):"")+'</div>'}).join(""):'<p class="mute">เริ่มคุยได้เลย เช่น ถามรายละเอียดของหรือขอ QR โอนเงิน</p>';
+ h+='</div><div class="send"><input id="msg" placeholder="พิมพ์ข้อความ" aria-label="ข้อความ"><button class="btn" id="sm">ส่ง</button></div>';
+ if(me.role==="carrier")h+='<label for="amt">ส่ง QR ให้โอนเงิน (บาท)</label><div class="send"><input id="amt" type="number" min="1" inputmode="numeric" value="'+tot(r)+'"><button class="btn alt" id="sq">ส่ง QR โอนเงิน</button></div>';
+ h+='<div class="bar"><button class="btn alt" id="back">กลับ</button></div></div>';
+ $("app").innerHTML=h;var l=$("log");l.scrollTop=l.scrollHeight;
+}
+function push(text,qa){DB.msgs.push({rid:chat,from:me.id,text:text,qr:qa||0});save();chatView(chat)}
+
+document.addEventListener("click",function(e){
+ var b=e.target.closest("button");if(!b)return;var d=b.dataset;
+ if(d.m){mode=d.m;return auth()}
+ if(d.r){role=d.r;return auth()}
+ if(b.id==="go")return doAuth();
+ if(b.id==="out"){me=null;mode="login";return home()}
+ if(d.tab){tab=d.tab;return customerView()}
+ if(d.ct){ct=d.ct;return carrierView()}
+ if(d.shop){shop=Number(d.shop);return customerView()}
+ if(d.c){var k=SHOPS[shop].n+d.k;cart[k]=Math.max(0,Math.min(20,(cart[k]||0)+Number(d.c)));var dm=$("dm").value;customerView();$("dm").value=dm;return}
+ if(b.id==="order"){var sh=SHOPS[shop],fd=0,it=[],nn=0;sh.m.forEach(function(m,k){var q=cart[sh.n+k]||0;if(q){fd+=q*m[1];nn+=q;it.push(m[0]+" ×"+q)}});
+  draft={shopName:sh.n,item:it.join(", "),food:fd,n:nn,to:$("dm").value};sstep=1;return customerView()}
+ if(d.sback){sstep=0;return customerView()}
+ if(d.pickshop){var cu=U(Number(d.pickshop));DB.reqs.unshift({id:DB.seq++,type:"shop",cid:me.id,kid:cu.id,shopName:draft.shopName,item:draft.item,qty:draft.n,to:draft.to,food:draft.food,fee:cu.fee,st:"wait"});cart={};sstep=0;tab="mine";save();toast("ส่งคำขอให้ "+cu.name+" แล้ว");return customerView()}
+ if(d.pick)return pickView(Number(d.pick));
+ if(b.id==="back")return home();
+ if(b.id==="send"){var it2=$("it").value.trim(),q=Number($("qy").value);
+  if(!it2)return $("err").textContent="บอกด้วยว่าอยากฝากซื้ออะไร";
+  if(!(q>=1&&q<=50))return $("err").textContent="จำนวนต้องอยู่ระหว่าง 1–50 ชิ้น";
+  DB.reqs.unshift({id:DB.seq++,type:"direct",cid:me.id,kid:pick.id,item:it2,qty:q,to:$("tp").value,fee:pick.fee,st:"wait"});save();tab="mine";toast("ส่งคำขอให้ "+pick.name+" แล้ว");return home()}
+ if(d.a){var r=R(Number(d.id));if(d.a==="take"){r.kid=me.id;r.st="ok";ct="mine";toast("รับงานแล้ว ไปแชทขอส่ง QR ได้เลย")}else r.st=d.a;save();return carrierView()}
+ if(d.chat)return chatView(Number(d.chat));
+ if(b.id==="sm"){var t=$("msg").value.trim();if(t)push(t);return}
+ if(b.id==="sq"){var a=Number($("amt").value);if(!(a>0))return toast("กรอกจำนวนเงิน");push("ส่ง QR ให้โอนเงิน ฿"+a+" ค่ะ",a);return}
+ if(d.paid){R(Number(d.paid)).paid=true;push("โอนเงินแล้ว ฿"+d.amt+" ✅")}
+});
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.id==="msg"){var t=e.target.value.trim();if(t)push(t)}});
+document.addEventListener("input",function(e){if(e.target.id==="qy"&&pick){$("tot").textContent="฿"+(Number(e.target.value)||0)*pick.fee}});
+document.addEventListener("change",function(e){if(e.target.id==="fp"){fl.place=e.target.value;customerView()}if(e.target.id==="fs"){fl.sort=e.target.value;customerView()}});
+home();
+})();
+</script>
+</body>
+</html>
